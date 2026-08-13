@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="SBRBIOFORGE: AI-Powered Health, Career, and Sustainability Intelligence Platform">
+    <title>SBRBIOFORGE | AI Ecosystem</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #050505;
+            color: #c0c0c0;
+            font-family: 'Roboto', sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header Section */
+        .header {
+            text-align: center;
+            padding: 40px 20px;
+            border-bottom: 2px dashed #c0c0c0;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #c0c0c0;
+            text-shadow: 0 0 20px rgba(192, 192, 192, 0.5);
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+        }
+
+        .header p {
+            font-size: 0.95rem;
+            color: #888888;
+            font-weight: 300;
+        }
+
+        /* Main Content Grid */
+        .content-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        /* Left Panel - Controls */
+        .control-panel {
+            background-color: #0a0a0a;
+            border: 2px solid #c0c0c0;
+            padding: 30px;
+            border-radius: 4px;
+        }
+
+        .control-panel h2 {
+            font-size: 1.4rem;
+            color: #c0c0c0;
+            margin-bottom: 25px;
+            text-shadow: 0 0 15px rgba(192, 192, 192, 0.3);
+            border-bottom: 1px dashed #c0c0c0;
+            padding-bottom: 15px;
+        }
+
+        /* Dropdown Selector */
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #c0c0c0;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .form-group select {
+            width: 100%;
+            padding: 12px 15px;
+            background-color: #1a1a1a;
+            color: #c0c0c0;
+            border: 2px solid #c0c0c0;
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .form-group select:hover,
+        .form-group select:focus {
+            background-color: #2a2a2a;
+            box-shadow: 0 0 10px rgba(192, 192, 192, 0.3);
+            outline: none;
+        }
+
+        .form-group select option {
+            background-color: #1a1a1a;
+            color: #c0c0c0;
+            padding: 8px;
+        }
+
+        /* Text Input Area */
+        .form-group textarea {
+            width: 100%;
+            height: 200px;
+            padding: 15px;
+            background-color: #1a1a1a;
+            color: #c0c0c0;
+            border: 2px solid #c0c0c0;
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.9rem;
+            resize: none;
+            transition: all 0.3s ease;
+            line-height: 1.5;
+        }
+
+        .form-group textarea:hover,
+        .form-group textarea:focus {
+            background-color: #2a2a2a;
+            box-shadow: 0 0 10px rgba(192, 192, 192, 0.3);
+            outline: none;
+        }
+
+        .form-group textarea::placeholder {
+            color: #555555;
+        }
+
+        /* Button Styles */
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 14px 20px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border: 2px solid #c0c0c0;
+            background-color: #050505;
+            color: #c0c0c0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 2px;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .btn:hover {
+            background-color: #c0c0c0;
+            color: #050505;
+            box-shadow: 0 0 20px rgba(192, 192, 192, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn-primary {
+            background-color: #1a1a1a;
+        }
+
+        .btn-primary:hover {
+            background-color: #c0c0c0;
+            color: #050505;
+        }
+
+        /* Right Panel - Terminal Output */
+        .terminal-panel {
+            background-color: #0a0a0a;
+            border: 3px dashed #c0c0c0;
+            padding: 30px;
+            min-height: 400px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .terminal-panel h2 {
+            font-size: 1.4rem;
+            color: #c0c0c0;
+            margin-bottom: 20px;
+            text-shadow: 0 0 15px rgba(192, 192, 192, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .terminal-output {
+            flex: 1;
+            background-color: #050505;
+            border: 1px dashed #555555;
+            padding: 20px;
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.9rem;
+            color: #c0c0c0;
+            overflow-y: auto;
+            word-wrap: break-word;
+            white-space: pre-wrap;
+            line-height: 1.6;
+            text-shadow: 0 0 5px rgba(192, 192, 192, 0.2);
+        }
+
+        .terminal-output::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .terminal-output::-webkit-scrollbar-track {
+            background: #1a1a1a;
+        }
+
+        .terminal-output::-webkit-scrollbar-thumb {
+            background: #c0c0c0;
+            border-radius: 4px;
+        }
+
+        .terminal-status {
+            margin-top: 15px;
+            padding: 10px;
+            background-color: #1a1a1a;
+            border: 1px solid #c0c0c0;
+            border-radius: 2px;
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.85rem;
+            color: #c0c0c0;
+            text-align: center;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.7;
+            }
+        }
+
+        /* Monetization Footer */
+        .footer-cta {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            padding-top: 40px;
+            border-top: 2px dashed #c0c0c0;
+            margin-top: 40px;
+        }
+
+        .cta-button {
+            padding: 20px;
+            text-align: center;
+            border: 2px solid #c0c0c0;
+            background-color: #0a0a0a;
+            text-decoration: none;
+            color: #c0c0c0;
+            font-size: 1.1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border-radius: 2px;
+        }
+
+        .cta-button:hover {
+            background-color: #c0c0c0;
+            color: #050505;
+            box-shadow: 0 0 25px rgba(192, 192, 192, 0.6);
+            transform: scale(1.05);
+        }
+
+        .cta-button span {
+            display: block;
+            font-size: 0.8rem;
+            color: #888888;
+            margin-top: 5px;
+            font-weight: 300;
+        }
+
+        .cta-button:hover span {
+            color: #050505;
+        }
+
+        /* Module Description */
+        .module-description {
+            background-color: #1a1a1a;
+            border-left: 3px solid #c0c0c0;
+            padding: 15px;
+            margin-top: 20px;
+            font-size: 0.85rem;
+            color: #a0a0a0;
+            line-height: 1.5;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .content-wrapper {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .footer-cta {
+                grid-template-columns: 1fr;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            .terminal-panel {
+                min-height: 300px;
+            }
+        }
+
+        /* Loading Animation */
+        .loading-spinner {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border: 2px solid #c0c0c0;
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Error State */
+        .error-state {
+            color: #ff6b6b;
+            border-left: 3px solid #ff6b6b;
+            padding-left: 10px;
+        }
+
+        /* Success State */
+        .success-state {
+            color: #51cf66;
+            border-left: 3px solid #51cf66;
+            padding-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>⚛️ SBRBIOFORGE</h1>
+            <p>Unified AI Ecosystem for Health, Legacy, Sustainability & Career Intelligence</p>
+        </div>
+
+        <!-- Main Content -->
+        <div class="content-wrapper">
+            <!-- Left Control Panel -->
+            <div class="control-panel">
+                <h2>🔧 Control Center</h2>
+                
+                <div class="form-group">
+                    <label for="moduleSelector">Select Module</label>
+                    <select id="moduleSelector">
+                        <option value="1">1 - Health Predictor (Longevity Risk Analysis)</option>
+                        <option value="2">2 - Digital Legacy (100-Year Ancestry Vault)</option>
+                        <option value="3">3 - Eco-Tracker (Sustainability & Carbon Audit)</option>
+                        <option value="4">4 - Skills Coach (AI Career Futurist Path)</option>
+                        <option value="5">5 - Tech Shield (Phishing & Scam Detection)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="userPayload">Personal Data Input</label>
+                    <textarea id="userPayload" placeholder="Enter your lifestyle metrics, health data, career background, or security concerns here. The AI will analyze contextually based on your selected module."></textarea>
+                </div>
+
+                <div class="module-description" id="moduleDescription">
+                    Select a module above to see its description.
+                </div>
+
+                <div class="button-group">
+                    <button class="btn btn-primary" onclick="initializePulse()">Initialize Transmission</button>
+                    <button class="btn" onclick="clearTerminal()">Clear Terminal</button>
+                </div>
+            </div>
+
+            <!-- Right Terminal Output Panel -->
+            <div class="terminal-panel">
+                <h2>📡 Neural Output</h2>
+                <div class="terminal-output" id="terminalOutput">
+                    ┌────────────────────────────────────────┐
+                    │   SBRBIOFORGE NEURAL INTERFACE v1.0    │
+                    │   Ready for transmission...             │
+                    └────────────────────────────────────────┘
+
+                    > Awaiting user input...
+                </div>
+                <div class="terminal-status" id="statusIndicator">
+                    🟢 System Ready
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer CTA -->
+        <div class="footer-cta">
+            <a href="#" class="cta-button" id="affiliateLink" onclick="handleAffiliateClick(event)">
+                💰 My Affiliate Link
+                <span>Earn rewards through referrals</span>
+            </a>
+            <a href="#" class="cta-button" id="buyNowButton" onclick="handleBuyNowClick(event)">
+                🚀 Buy Now
+                <span>Unlock premium features</span>
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // ═══════════════════════════════════════════════════════════════
+        // SBRBIOFORGE API CONFIGURATION
+        // ═══════════════════════════════════════════════════════════════
+        
+        // ⚠️ PASTE YOUR GROQ API KEY HERE ⚠️
+        const GROQ_API_KEY = "YOUR_GROQ_API_KEY_HERE"; // Replace with your actual gsk_ token
+        
+        // Groq API Endpoint
+        const GROQ_API_ENDPOINT = "https://api.groq.com/openai/v1/chat/completions";
+        
+        // Model Configuration (Hardcoded)
+        const TARGET_MODEL = "llama-3.3-70b-versatile";
+        const TEMPERATURE = 0.3; // Clinical data consistency
+        
+        // ═══════════════════════════════════════════════════════════════
+        // MODULE SYSTEM PROMPTS
+        // ═══════════════════════════════════════════════════════════════
+        
+        const MODULE_PROMPTS = {
+            "1": `You are the SBRBIOFORGE Health Predictor Engine. Your role is to analyze user health metrics and lifestyle data to identify the top 3 major clinical health risks for the next 10 years. Be precise, data-driven, and provide specific actionable recommendations. Consider factors like sleep patterns, exercise, family history, stress levels, and diet. Provide your analysis in a structured format with risk severity levels (High/Medium/Low) and specific preventative measures.`,
+            
+            "2": `You are the SBRBIOFORGE Digital Legacy Architect. Your role is to analyze personal traits, communication style, values, and memories to create a comprehensive digital persona that captures the essence of an individual for preservation in a 100-year ancestry vault. Generate a structured personal narrative including core values, communication patterns, creative expressions, and memorable wisdom. Format output as a detailed legacy document.`,
+            
+            "3": `You are the SBRBIOFORGE Sustainability Calculator. Your role is to analyze user resource consumption patterns (water usage, energy, transportation, food) and calculate exact environmental impact metrics including water wastage, carbon emissions, and waste generation. Provide specific reduction strategies, quantify potential savings, and offer a detailed blueprint for achieving sustainability targets. Include concrete alternatives and timeline estimates.`,
+            
+            "4": `You are the SBRBIOFORGE Career Futurist Coach. Your role is to assess the user's current technical skills, experience level, and learning capacity against emerging multi-agent AI ecosystem opportunities. Create a comprehensive 6-month continuous upskilling roadmap including: specific technologies to learn, project milestones, skill progression checkpoints, and career advancement pathways. Structure the output as a week-by-week actionable plan.`,
+            
+            "5": `You are the SBRBIOFORGE Cybersecurity Advisor. Your role is to screen user-provided text (messages, links, emails, prompts) for phishing markers, social engineering tactics, credential harvesting attempts, and malicious intent. Identify specific red flags, explain the threat, and provide technical safety recommendations and protective measures. Be thorough and precise in threat analysis.`
+        };
+
+        const MODULE_DESCRIPTIONS = {
+            "1": "🏥 Health Predictor: Analyzes your lifestyle metrics to predict 10-year clinical risks and provide preventative measures.",
+            "2": "👥 Digital Legacy: Creates a comprehensive digital persona capturing your essence for 100-year preservation.",
+            "3": "🌍 Eco-Tracker: Calculates your environmental impact and provides sustainability reduction blueprints.",
+            "4": "💼 Skills Coach: Maps your current tech skills to AI career opportunities and builds a 6-month upskilling roadmap.",
+            "5": "🛡️ Tech Shield: Scans text inputs for phishing, scams, and security threats with detailed threat analysis."
+        };
+
+        // ═══════════════════════════════════════════════════════════════
+        // UTILITY FUNCTIONS
+        // ═══════════════════════════════════════════════════════════════
+
+        /**
+         * Update the module description display
+         */
+        function updateModuleDescription() {
+            const selectedModule = document.getElementById('moduleSelector').value;
+            const description = MODULE_DESCRIPTIONS[selectedModule] || "Select a module to see its description.";
+            document.getElementById('moduleDescription').textContent = description;
+        }
+
+        /**
+         * Append text to terminal output
+         */
+        function appendToTerminal(text, type = 'normal') {
+            const terminal = document.getElementById('terminalOutput');
+            const timestamp = new Date().toLocaleTimeString();
+            let formattedText = `[${timestamp}] ${text}`;
+            
+            if (type === 'error') {
+                formattedText = `<span class="error-state">[${timestamp}] ❌ ERROR: ${text}</span>`;
+            } else if (type === 'success') {
+                formattedText = `<span class="success-state">[${timestamp}] ✅ SUCCESS: ${text}</span>`;
+            }
+            
+            terminal.innerHTML += formattedText + '\n';
+            terminal.scrollTop = terminal.scrollHeight;
+        }
+
+        /**
+         * Clear terminal output
+         */
+        function clearTerminal() {
+            document.getElementById('terminalOutput').textContent = 
+                '┌────────────────────────────────────────┐\n' +
+                '│   SBRBIOFORGE NEURAL INTERFACE v1.0    │\n' +
+                '│   Terminal cleared. Ready for input.    │\n' +
+                '└────────────────────────────────────────┘\n\n> Awaiting user input...\n';
+            updateStatus('🟢 System Ready', false);
+        }
+
+        /**
+         * Update status indicator
+         */
+        function updateStatus(message, isLoading = false) {
+            const indicator = document.getElementById('statusIndicator');
+            if (isLoading) {
+                indicator.innerHTML = `<span class="loading-spinner"></span> ${message}`;
+            } else {
+                indicator.textContent = message;
+            }
+        }
+
+        // ═══════════════════════════════════════════════════════════════
+        // MAIN API INTEGRATION FUNCTION
+        // ═══════════════════════════════════════════════════════════════
+
+        /**
+         * Initialize Transmission - Main async function for API calls
+         */
+        async function initializePulse() {
+            // Validation
+            const userPayload = document.getElementById('userPayload').value.trim();
+            const selectedModule = document.getElementById('moduleSelector').value;
+
+            if (!userPayload) {
+                appendToTerminal('Empty payload detected. Please enter personal data.', 'error');
+                updateStatus('🔴 Input Error', false);
+                return;
+            }
+
+            if (!GROQ_API_KEY || GROQ_API_KEY === "YOUR_GROQ_API_KEY_HERE") {
+                appendToTerminal('API key not configured. Please add your Groq API key to the script.', 'error');
+                updateStatus('🔴 Configuration Error', false);
+                return;
+            }
+
+            // Clear previous output and update status
+            clearTerminal();
+            updateStatus('🔄 Syncing with Server', true);
+            appendToTerminal('Initializing neural transmission...');
+            appendToTerminal(`Module Selected: ${selectedModule}`);
+            appendToTerminal(`Payload Size: ${userPayload.length} characters`);
+            appendToTerminal('Connecting to Groq API...\n');
+
+            try {
+                // Build request payload
+                const requestPayload = {
+                    model: TARGET_MODEL,
+                    temperature: TEMPERATURE,
+                    messages: [
+                        {
+                            role: "system",
+                            content: MODULE_PROMPTS[selectedModule]
+                        },
+                        {
+                            role: "user",
+                            content: userPayload
+                        }
+                    ],
+                    max_tokens: 2048
+                };
+
+                appendToTerminal('Payload constructed. Sending request...');
+
+                // Make the API call
+                const response = await fetch(GROQ_API_ENDPOINT, {
+                    method: "POST",
+                    headers: {
+                        "Authorization": `Bearer ${GROQ_API_KEY}`,
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(requestPayload),
+                    timeout: 30000
+                });
+
+                // Handle HTTP errors
+                if (!response.ok) {
+                    const errorData = await response.json().catch(() => ({}));
+                    const errorMessage = errorData.error?.message || `HTTP ${response.status}: ${response.statusText}`;
+                    
+                    appendToTerminal(`API returned error: ${errorMessage}`, 'error');
+                    
+                    if (response.status === 401) {
+                        appendToTerminal('Authentication failed. Verify your Groq API key is correct.', 'error');
+                    } else if (response.status === 429) {
+                        appendToTerminal('Rate limit exceeded. Please wait before retrying.', 'error');
+                    } else if (response.status >= 500) {
+                        appendToTerminal('Groq server error. Please try again later.', 'error');
+                    }
+                    
+                    updateStatus('🔴 Request Failed', false);
+                    return;
+                }
+
+                // Parse response
+                const data = await response.json();
+
+                // Extract content from response
+                if (!data.choices || !data.choices[0] || !data.choices[0].message || !data.choices[0].message.content) {
+                    throw new Error('Unexpected response structure from API');
+                }
+
+                const aiResponse = data.choices[0].message.content;
+
+                // Display success and response
+                appendToTerminal('\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+                appendToTerminal('AI ANALYSIS COMPLETE', 'success');
+                appendToTerminal('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n');
+                appendToTerminal(aiResponse);
+                appendToTerminal('\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+                appendToTerminal(`Tokens Used: Input=${data.usage?.prompt_tokens || '?'}, Output=${data.usage?.completion_tokens || '?'}`, 'success');
+                
+                updateStatus('🟢 Transmission Complete', false);
+
+            } catch (error) {
+                // Comprehensive error handling
+                appendToTerminal(`Network Error: ${error.message}`, 'error');
+                appendToTerminal('Possible causes: Invalid API key, network timeout, or CORS restriction', 'error');
+                appendToTerminal('Verify your Groq API key and try again.', 'error');
+                updateStatus('🔴 Connection Failed', false);
+                console.error('Detailed error:', error);
+            }
+        }
+
+        // ═══════════════════════════════════════════════════════════════
+        // MONETIZATION HANDLERS
+        // ═══════════════════════════════════════════════════════════════
+
+        /**
+         * Handle Affiliate Link Click
+         */
+        function handleAffiliateClick(event) {
+            event.preventDefault();
+            appendToTerminal('💰 Affiliate Link Accessed - Redirecting to partner portal...');
+            // Replace with your actual affiliate link
+            window.open('https://sbrbioforge.com/affiliate', '_blank');
+        }
+
+        /**
+         * Handle Buy Now Click
+         */
+        function handleBuyNowClick(event) {
+            event.preventDefault();
+            appendToTerminal('🚀 Purchase Portal Initiated - Opening checkout...');
+            // Replace with your actual purchase/checkout link
+            window.open('https://sbrbioforge.com/checkout', '_blank');
+        }
+
+        // ═══════════════════════════════════════════════════════════════
+        // INITIALIZATION & EVENT LISTENERS
+        // ═══════════════════════════════════════════════════════════════
+
+        /**
+         * Initialize on page load
+         */
+        document.addEventListener('DOMContentLoaded', function() {
+            updateModuleDescription();
+            
+            // Update description when module changes
+            document.getElementById('moduleSelector').addEventListener('change', updateModuleDescription);
+
+            // Log initialization
+            console.log('SBRBIOFORGE Frontend Initialized Successfully');
+            console.log('Target Model:', TARGET_MODEL);
+            console.log('Temperature:', TEMPERATURE);
+            appendToTerminal('SBRBIOFORGE system initialized. Select a module and enter your data to begin.');
+        });
+
+        // Keyboard shortcut for transmission (Ctrl+Enter)
+        document.addEventListener('keydown', function(event) {
+            if (event.ctrlKey && event.key === 'Enter') {
+                initializePulse();
+            }
+        });
+    </script>
+</body>
+</html>
