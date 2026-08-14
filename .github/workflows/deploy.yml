@@ -1,1 +1,50 @@
+name: Deploy Flutter Web to GitHub Pages
 
+on:
+  push:
+    branches:
+      - main # अगर आपकी मुख्य ब्रांच का नाम master है, तो यहाँ master लिख दें
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      # यह स्टेप आपकी ऐप को सुरक्षित तरीके से ग्रोक की (Key) के साथ बिल्ड करेगा
+      - name: Build Web
+        run: flutter build web --release --dart-define=GROQ_API_KEY="${{ secrets.GROQ_API_KEY }}"
+
+      - name: Upload Artifacts
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: build/web
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+        
