@@ -1,9 +1,4 @@
- Flutter Web to GitHub Pages
-
-on:
-  push:
-    branches:
-      - main # अगर आपकी मुख्य ब्रांच का नाम master है, तो यहाँ master लिख दें
+master है, तो यहाँ master लिख दें
 
 jobs:
   build:
@@ -46,4 +41,5 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages
+        uses: actions/deploy
+        
