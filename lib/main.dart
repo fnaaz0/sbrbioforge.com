@@ -3,6 +3,10 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
+// Secure key retrieval: read from build-time environment (dart-define)
+// Usage: flutter build apk --release --dart-define=GROQ_API_KEY=your_api_key_here
+const String GROQ_API_KEY = String.fromEnvironment('GROQ_API_KEY', defaultValue: '');
+
 void main() {
   runApp(const CyberpunkApp());
 }
@@ -83,6 +87,23 @@ class _HomeScreenState extends State<HomeScreen> {
       return;
     }
 
+    // Enforce presence of a key when calling production Groq endpoint from the app
+    if (GROQ_API_KEY.isEmpty) {
+      setState(() {
+        aiResponse = '''
+GROQ API key not provided at runtime.
+
+To build the APK with your key, run (example):
+
+  flutter build apk --release --dart-define=GROQ_API_KEY="<YOUR_API_KEY_HERE>"
+
+For production, use a backend proxy / server to keep long-term secrets off-device.
+''';
+        hasError = true;
+      });
+      return;
+    }
+
     final String systemPrompt = systemPrompts[_selectedPromptKey] ?? '';
 
     setState(() {
@@ -107,6 +128,7 @@ class _HomeScreenState extends State<HomeScreen> {
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
+          'Authorization': 'Bearer $GROQ_API_KEY',
         },
         body: jsonEncode(body),
       );
@@ -123,7 +145,9 @@ class _HomeScreenState extends State<HomeScreen> {
       } catch (parseError) {
         // If parsing failed, throw to outer catch so error is shown in bright red
         throw FormatException(
-            'Failed to parse response at required path: jsonDecode(response.body)[\'choices\'][0][\'message\'][\'content\'].\nParse error: $parseError\nRaw response body: ${response.body}');
+            'Failed to parse response at required path: jsonDecode(response.body)[\'choices\'][0][\'message\'][\'content\'].
+Parse error: $parseError
+Raw response body: ${response.body}');
       }
 
       setState(() {
