@@ -8,6 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <meta name="groq-proxy-endpoint" content="">
     
     <style>
         * {
@@ -396,7 +397,7 @@
 
                 <div class="form-group">
                     <label for="userPayload">Personal Data Input</label>
-                    <textarea id="userPayload" placeholder="Enter your lifestyle metrics, health data, career background, or security concerns here. The AI will analyze contextually based on your selected module."></textarea>
+                    <textarea id="userPayload" placeholder="Enter your lifestyle metrics, health data, career background, or security concerns here. The AI will analyze contextually based on your[...]" ></textarea>
                 </div>
 
                 <div class="module-description" id="moduleDescription">
@@ -440,34 +441,59 @@
     </div>
 
     <script>
-        // ═══════════════════════════════════════════════════════════════
-        // SBRBIOFORGE API CONFIGURATION
-        // ═══════════════════════════════════════════════════════════════
-        
-        // ⚠️ PASTE YOUR GROQ API KEY HERE ⚠️
-        const GROQ_API_KEY = "YOUR_GROQ_API_KEY_HERE"; // Replace with your actual gsk_ token
-        
-        // Groq API Endpoint
+        // ═════════════════════════════════════════════════════════════�[...]
+        // SBRBIOFORGE API CONFIGURATION (SECURE PROXY-FORWARDING MODE)
+        // ═════════════════════════════════════════════════════════════�[...]
+
+        // NOTE: Do NOT embed long-lived API keys in client-side code. Configure a backend proxy
+        // to inject the Authorization header server-side. This file intentionally contains no secret.
+
+        // Primary proxy endpoint for forwarding requests to Groq (configure on your server)
+        function _readProxyEndpointFromMeta() {
+            try {
+                const meta = document.querySelector('meta[name="groq-proxy-endpoint"]');
+                if (meta && meta.content && meta.content.trim().length > 0) return meta.content.trim();
+            } catch (e) {
+                // ignore
+            }
+            return '';
+        }
+
+        function getProxyEndpoint() {
+            // 1) Window-level environment (injected by server-side templating or hosting platform)
+            if (window.__ENV__ && window.__ENV__.GROQ_PROXY_ENDPOINT) return window.__ENV__.GROQ_PROXY_ENDPOINT;
+
+            // 2) Meta tag fallback (set by your static host / templating engine)
+            const meta = _readProxyEndpointFromMeta();
+            if (meta) return meta;
+
+            // 3) Default assumption: relative API route (useful when deploying server and client together)
+            return '/api/groq-proxy';
+        }
+
+        const GROQ_PROXY_ENDPOINT = getProxyEndpoint();
+
+        // Keep original Groq endpoint for server-side reference (client must not use it directly)
         const GROQ_API_ENDPOINT = "https://api.groq.com/openai/v1/chat/completions";
-        
+
         // Model Configuration (Hardcoded)
         const TARGET_MODEL = "llama-3.3-70b-versatile";
         const TEMPERATURE = 0.3; // Clinical data consistency
-        
-        // ═══════════════════════════════════════════════════════════════
+
+        // ═════════════════════════════════════════════════════════════�[...]
         // MODULE SYSTEM PROMPTS
-        // ═══════════════════════════════════════════════════════════════
-        
+        // ═════════════════════════════════════════════════════════════�[...]
+
         const MODULE_PROMPTS = {
-            "1": `You are the SBRBIOFORGE Health Predictor Engine. Your role is to analyze user health metrics and lifestyle data to identify the top 3 major clinical health risks for the next 10 years. Be precise, data-driven, and provide specific actionable recommendations. Consider factors like sleep patterns, exercise, family history, stress levels, and diet. Provide your analysis in a structured format with risk severity levels (High/Medium/Low) and specific preventative measures.`,
+            "1": `You are the SBRBIOFORGE Health Predictor Engine. Your role is to analyze user health metrics and lifestyle data to identify the top 3 major clinical health risks for the next 10[...]
             
-            "2": `You are the SBRBIOFORGE Digital Legacy Architect. Your role is to analyze personal traits, communication style, values, and memories to create a comprehensive digital persona that captures the essence of an individual for preservation in a 100-year ancestry vault. Generate a structured personal narrative including core values, communication patterns, creative expressions, and memorable wisdom. Format output as a detailed legacy document.`,
+            "2": `You are the SBRBIOFORGE Digital Legacy Architect. Your role is to analyze personal traits, communication style, values, and memories to create a comprehensive digital persona th[...]
             
-            "3": `You are the SBRBIOFORGE Sustainability Calculator. Your role is to analyze user resource consumption patterns (water usage, energy, transportation, food) and calculate exact environmental impact metrics including water wastage, carbon emissions, and waste generation. Provide specific reduction strategies, quantify potential savings, and offer a detailed blueprint for achieving sustainability targets. Include concrete alternatives and timeline estimates.`,
+            "3": `You are the SBRBIOFORGE Sustainability Calculator. Your role is to analyze user resource consumption patterns (water usage, energy, transportation, food) and calculate exact env[...]
             
-            "4": `You are the SBRBIOFORGE Career Futurist Coach. Your role is to assess the user's current technical skills, experience level, and learning capacity against emerging multi-agent AI ecosystem opportunities. Create a comprehensive 6-month continuous upskilling roadmap including: specific technologies to learn, project milestones, skill progression checkpoints, and career advancement pathways. Structure the output as a week-by-week actionable plan.`,
+            "4": `You are the SBRBIOFORGE Career Futurist Coach. Your role is to assess the user's current technical skills, experience level, and learning capacity against emerging multi-agent A[...]
             
-            "5": `You are the SBRBIOFORGE Cybersecurity Advisor. Your role is to screen user-provided text (messages, links, emails, prompts) for phishing markers, social engineering tactics, credential harvesting attempts, and malicious intent. Identify specific red flags, explain the threat, and provide technical safety recommendations and protective measures. Be thorough and precise in threat analysis.`
+            "5": `You are the SBRBIOFORGE Cybersecurity Advisor. Your role is to screen user-provided text (messages, links, emails, prompts) for phishing markers, social engineering tactics, cre[...]
         };
 
         const MODULE_DESCRIPTIONS = {
@@ -478,9 +504,9 @@
             "5": "🛡️ Tech Shield: Scans text inputs for phishing, scams, and security threats with detailed threat analysis."
         };
 
-        // ═══════════════════════════════════════════════════════════════
+        // ═════════════════════════════════════════════════════════════�[...]
         // UTILITY FUNCTIONS
-        // ═══════════════════════════════════════════════════════════════
+        // ═════════════════════════════════════════════════════════════�[...]
 
         /**
          * Update the module description display
@@ -533,9 +559,9 @@
             }
         }
 
-        // ═══════════════════════════════════════════════════════════════
-        // MAIN API INTEGRATION FUNCTION
-        // ═══════════════════════════════════════════════════════════════
+        // ═════════════════════════════════════════════════════════════�[...]
+        // MAIN API INTEGRATION FUNCTION (via proxy)
+        // ═════════════════════════════════════════════════════════════�[...]
 
         /**
          * Initialize Transmission - Main async function for API calls
@@ -551,8 +577,10 @@
                 return;
             }
 
-            if (!GROQ_API_KEY || GROQ_API_KEY === "YOUR_GROQ_API_KEY_HERE") {
-                appendToTerminal('API key not configured. Please add your Groq API key to the script.', 'error');
+            // Ensure proxy endpoint is available (secure pattern)
+            if (!GROQ_PROXY_ENDPOINT || GROQ_PROXY_ENDPOINT.length === 0) {
+                appendToTerminal('Configuration Error: No GROQ proxy endpoint configured. Configure window.__ENV__.GROQ_PROXY_ENDPOINT or meta[name="groq-proxy-endpoint"].', 'error');
+                appendToTerminal('For local testing you can set up a dev proxy or use the server-side proxy pattern documented in the README.', 'error');
                 updateStatus('🔴 Configuration Error', false);
                 return;
             }
@@ -563,7 +591,7 @@
             appendToTerminal('Initializing neural transmission...');
             appendToTerminal(`Module Selected: ${selectedModule}`);
             appendToTerminal(`Payload Size: ${userPayload.length} characters`);
-            appendToTerminal('Connecting to Groq API...\n');
+            appendToTerminal('Connecting to server proxy...\n');
 
             try {
                 // Build request payload
@@ -583,34 +611,32 @@
                     max_tokens: 2048
                 };
 
-                appendToTerminal('Payload constructed. Sending request...');
+                appendToTerminal('Payload constructed. Sending request to proxy...');
 
-                // Make the API call
-                const response = await fetch(GROQ_API_ENDPOINT, {
+                // Make the API call via backend proxy (no long-lived secret in the client)
+                const response = await fetch(GROQ_PROXY_ENDPOINT, {
                     method: "POST",
                     headers: {
-                        "Authorization": `Bearer ${GROQ_API_KEY}`,
                         "Content-Type": "application/json"
                     },
-                    body: JSON.stringify(requestPayload),
-                    timeout: 30000
+                    body: JSON.stringify(requestPayload)
                 });
 
                 // Handle HTTP errors
                 if (!response.ok) {
                     const errorData = await response.json().catch(() => ({}));
                     const errorMessage = errorData.error?.message || `HTTP ${response.status}: ${response.statusText}`;
-                    
-                    appendToTerminal(`API returned error: ${errorMessage}`, 'error');
-                    
+
+                    appendToTerminal(`Proxy returned error: ${errorMessage}`, 'error');
+
                     if (response.status === 401) {
-                        appendToTerminal('Authentication failed. Verify your Groq API key is correct.', 'error');
+                        appendToTerminal('Authentication failed at proxy. Verify server-side Groq API key configuration.', 'error');
                     } else if (response.status === 429) {
                         appendToTerminal('Rate limit exceeded. Please wait before retrying.', 'error');
                     } else if (response.status >= 500) {
-                        appendToTerminal('Groq server error. Please try again later.', 'error');
+                        appendToTerminal('Server error. Please try again later.', 'error');
                     }
-                    
+
                     updateStatus('🔴 Request Failed', false);
                     return;
                 }
@@ -618,9 +644,9 @@
                 // Parse response
                 const data = await response.json();
 
-                // Extract content from response
+                // Extract content from response (strict path)
                 if (!data.choices || !data.choices[0] || !data.choices[0].message || !data.choices[0].message.content) {
-                    throw new Error('Unexpected response structure from API');
+                    throw new Error('Unexpected response structure from API (proxy response)');
                 }
 
                 const aiResponse = data.choices[0].message.content;
@@ -632,22 +658,22 @@
                 appendToTerminal(aiResponse);
                 appendToTerminal('\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
                 appendToTerminal(`Tokens Used: Input=${data.usage?.prompt_tokens || '?'}, Output=${data.usage?.completion_tokens || '?'}`, 'success');
-                
+
                 updateStatus('🟢 Transmission Complete', false);
 
             } catch (error) {
                 // Comprehensive error handling
                 appendToTerminal(`Network Error: ${error.message}`, 'error');
-                appendToTerminal('Possible causes: Invalid API key, network timeout, or CORS restriction', 'error');
-                appendToTerminal('Verify your Groq API key and try again.', 'error');
+                appendToTerminal('Possible causes: Proxy misconfiguration, network timeout, or CORS restriction', 'error');
+                appendToTerminal('Verify your server proxy and try again.', 'error');
                 updateStatus('🔴 Connection Failed', false);
                 console.error('Detailed error:', error);
             }
         }
 
-        // ═══════════════════════════════════════════════════════════════
+        // ═════════════════════════════════════════════════════════════�[...]
         // MONETIZATION HANDLERS
-        // ═══════════════════════════════════════════════════════════════
+        // ═════════════════════════════════════════════════════════════�[...]
 
         /**
          * Handle Affiliate Link Click
@@ -669,9 +695,9 @@
             window.open('https://sbrbioforge.com/checkout', '_blank');
         }
 
-        // ═══════════════════════════════════════════════════════════════
+        // ═════════════════════════════════════════════════════════════�[...]
         // INITIALIZATION & EVENT LISTENERS
-        // ═══════════════════════════════════════════════════════════════
+        // ═════════════════════════════════════════════════════════════�[...]
 
         /**
          * Initialize on page load
@@ -686,6 +712,11 @@
             console.log('SBRBIOFORGE Frontend Initialized Successfully');
             console.log('Target Model:', TARGET_MODEL);
             console.log('Temperature:', TEMPERATURE);
+
+            if (!GROQ_PROXY_ENDPOINT || GROQ_PROXY_ENDPOINT === '/api/groq-proxy') {
+                appendToTerminal('Note: GROQ proxy endpoint not explicitly configured. Using default \'/api/groq-proxy\'. Configure window.__ENV__.GROQ_PROXY_ENDPOINT or meta[name="groq-proxy-endpoint"] for custom proxy URL.', 'error');
+            }
+
             appendToTerminal('SBRBIOFORGE system initialized. Select a module and enter your data to begin.');
         });
 
