@@ -1,0 +1,215 @@
+name: sbrbioforge
+description: 300-Year Civilization Companion - Climate Resilience & Survival Intelligence Platform with Omni-Language Support, GPS Detection, and Real-time Environmental Monitoring.
+
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # ============================================================================
+  # CORE FLUTTER PACKAGES
+  # ============================================================================
+  cupertino_icons: ^1.0.6
+  flutter_localizations:
+    sdk: flutter
+
+  # ============================================================================
+  # GPS & LOCATION SERVICES
+  # ============================================================================
+  geolocator: ^11.0.0
+  geocoding: ^3.0.0
+  location: ^5.0.1
+
+  # ============================================================================
+  # NETWORKING & API INTEGRATION
+  # ============================================================================
+  http: ^1.1.0
+  dio: ^5.3.1
+  connectivity_plus: ^5.0.0
+  
+  # ============================================================================
+  # STATE MANAGEMENT
+  # ============================================================================
+  provider: ^6.0.0
+  riverpod: ^2.4.0
+  flutter_riverpod: ^2.4.0
+  
+  # ============================================================================
+  # LOCAL STORAGE & OFFLINE SUPPORT
+  # ============================================================================
+  sqflite: ^2.3.0
+  path: ^1.8.3
+  path_provider: ^2.1.1
+  shared_preferences: ^2.2.2
+  hive: ^2.2.3
+  hive_flutter: ^1.1.0
+
+  # ============================================================================
+  # JSON SERIALIZATION & PARSING
+  # ============================================================================
+  json_serializable: ^6.7.1
+  json_annotation: ^4.8.1
+  freezed_annotation: ^2.4.1
+
+  # ============================================================================
+  # AUDIO PLAYBACK & TEXT-TO-SPEECH
+  # ============================================================================
+  audioplayers: ^5.2.1
+  just_audio: ^0.9.36
+  text_to_speech: ^0.2.3
+  flutter_tts: ^0.14.0
+  http_parser: ^4.0.2
+
+  # ============================================================================
+  # UI & DESIGN COMPONENTS
+  # ============================================================================
+  flutter_svg: ^2.0.9
+  google_fonts: ^6.2.0
+  intl: ^0.19.0
+  loading_animation_widget: ^1.2.1
+  shimmer: ^3.0.0
+  lottie: ^2.7.0
+  cached_network_image: ^3.3.1
+  image_picker: ^1.0.7
+  permission_handler: ^11.4.4
+
+  # ============================================================================
+  # ENVIRONMENT & CONFIGURATION
+  # ============================================================================
+  flutter_dotenv: ^5.1.0
+  envify: ^2.1.3
+  
+  # ============================================================================
+  # ERROR HANDLING & LOGGING
+  # ============================================================================
+  logger: ^2.0.1
+  sentry_flutter: ^7.0.0
+  firebase_crashlytics: ^3.4.3
+  
+  # ============================================================================
+  # MAPS & LOCATION VISUALIZATION
+  # ============================================================================
+  google_maps_flutter: ^2.5.5
+  flutter_map: ^6.1.0
+  latlong2: ^0.9.1
+
+  # ============================================================================
+  # DATA VISUALIZATION & CHARTS
+  # ============================================================================
+  fl_chart: ^0.64.0
+  charts_flutter: ^0.12.0
+  syncfusion_flutter_charts: ^23.1.36
+
+  # ============================================================================
+  # NOTIFICATIONS & ALERTS
+  # ============================================================================
+  flutter_local_notifications: ^14.1.1
+  firebase_messaging: ^14.7.8
+
+  # ============================================================================
+  # PLATFORM BRIDGE & NATIVE INTEGRATION
+  # ============================================================================
+  platform: ^3.1.0
+  device_info_plus: ^10.1.0
+  battery_plus: ^1.1.1
+
+  # ============================================================================
+  # INTERNATIONALIZATION & LOCALIZATION
+  # ============================================================================
+  easy_localization: ^3.0.2
+  translator: ^0.1.9
+
+  # ============================================================================
+  # UTILITY & HELPER PACKAGES
+  # ============================================================================
+  uuid: ^4.0.0
+  crypto: ^3.0.3
+  collection: ^1.17.2
+  async: ^2.11.0
+  stream_transform: ^2.1.0
+  dio_cache_interceptor: ^1.0.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  # ============================================================================
+  # TESTING & CODE GENERATION
+  # ============================================================================
+  flutter_lints: ^3.0.0
+  build_runner: ^2.4.6
+  json_serializable: ^6.7.1
+  freezed: ^2.4.1
+  hive_generator: ^2.0.1
+  
+  # ============================================================================
+  # MOCKING & TEST UTILITIES
+  # ============================================================================
+  mockito: ^5.4.4
+  mocktail: ^1.0.0
+
+flutter:
+  uses-material-design: true
+
+  # ============================================================================
+  # ASSETS
+  # ============================================================================
+  assets:
+    - assets/
+    - assets/images/
+    - assets/icons/
+    - assets/animations/
+    - assets/data/
+    - .env
+    - .env.example
+
+  # ============================================================================
+  # FONTS
+  # ============================================================================
+  fonts:
+    - family: Roboto
+      fonts:
+        - asset: assets/fonts/Roboto-Regular.ttf
+        - asset: assets/fonts/Roboto-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/Roboto-Light.ttf
+          weight: 300
+    - family: Inter
+      fonts:
+        - asset: assets/fonts/Inter-Regular.ttf
+        - asset: assets/fonts/Inter-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/Inter-Light.ttf
+          weight: 300
+    - family: Courier
+      fonts:
+        - asset: assets/fonts/CourierPrime-Regular.ttf
+        - asset: assets/fonts/CourierPrime-Bold.ttf
+          weight: 700
+
+  # ============================================================================
+  # PLUGIN CONFIGURATION
+  # ============================================================================
+  generate: true
+  
+# ============================================================================
+# BUILD CONFIGURATION
+# ============================================================================
+flutter_native_splash:
+  color: "#0B0C10"
+  image: assets/images/splash.png
+  android_12:
+    image: assets/images/splash.png
+    color: "#0B0C10"
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/images/app_icon.png"
+  min_sdk_android: 21
