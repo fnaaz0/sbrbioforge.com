@@ -1,1 +1,84 @@
+name: Build & Release Android APK
 
+on:
+  push:
+    tags:
+      - 'v*'  # Triggers on version tags (e.g., v1.0.0, v1.0.1)
+  workflow_dispatch:  # Allows manual trigger from Actions tab
+
+permissions:
+  contents: write
+  packages: read
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+          cache: 'gradle'
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: 'latest'
+          channel: 'stable'
+          cache: true
+
+      - name: Get Flutter dependencies
+        run: flutter pub get
+
+      - name: Analyze Flutter code
+        run: flutter analyze
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+        with:
+          api-level: 33
+          ndk-version: '25.1.8937393'
+          cmake-version: '3.22.1'
+
+      - name: Build Release APK
+        run: flutter build apk --release --no-shrink
+        env:
+          JAVA_TOOL_OPTIONS: -Xmx4g
+
+      - name: List build outputs
+        run: |
+          echo "Contents of build/app/outputs:"
+          find build/app/outputs -type f -name "*.apk"
+
+      - name: Create GitHub Release
+        id: create_release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            build/app/outputs/flutter-apk/app-release.apk
+          draft: false
+          prerelease: false
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload APK as Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: flutter-apk-release
+          path: build/app/outputs/flutter-apk/app-release.apk
+          retention-days: 30
+
+      - name: Display Release Info
+        run: |
+          echo "✅ Release created successfully!"
+          echo "📱 APK file: app-release.apk"
+          echo "🔗 Download from: https://github.com/${{ github.repository }}/releases/tag/${{ github.ref_name }}"
+          
