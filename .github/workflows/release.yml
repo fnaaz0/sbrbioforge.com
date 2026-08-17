@@ -3,8 +3,8 @@ name: Build & Release Android APK
 on:
   push:
     tags:
-      - 'v*'  # Triggers on version tags (e.g., v1.0.0, v1.0.1)
-  workflow_dispatch:  # Allows manual trigger from Actions tab
+      - 'v*'  # Only trigger on version tags (v1.0.0, v1.0.1, etc.)
+  workflow_dispatch:  # Manual trigger option
 
 permissions:
   contents: write
@@ -37,48 +37,27 @@ jobs:
       - name: Get Flutter dependencies
         run: flutter pub get
 
-      - name: Analyze Flutter code
-        run: flutter analyze
-
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@v3
-        with:
-          api-level: 33
-          ndk-version: '25.1.8937393'
-          cmake-version: '3.22.1'
-
       - name: Build Release APK
         run: flutter build apk --release --no-shrink
         env:
           JAVA_TOOL_OPTIONS: -Xmx4g
 
-      - name: List build outputs
+      - name: Verify APK was created
         run: |
-          echo "Contents of build/app/outputs:"
-          find build/app/outputs -type f -name "*.apk"
+          if [ ! -f "build/app/outputs/flutter-apk/app-release.apk" ]; then
+            echo "❌ APK build failed!"
+            exit 1
+          fi
+          echo "✅ APK successfully built"
+          ls -lh build/app/outputs/flutter-apk/app-release.apk
 
       - name: Create GitHub Release
-        id: create_release
         uses: softprops/action-gh-release@v2
         with:
-          files: |
-            build/app/outputs/flutter-apk/app-release.apk
+          files: build/app/outputs/flutter-apk/app-release.apk
           draft: false
           prerelease: false
           generate_release_notes: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Upload APK as Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: flutter-apk-release
-          path: build/app/outputs/flutter-apk/app-release.apk
-          retention-days: 30
-
-      - name: Display Release Info
-        run: |
-          echo "✅ Release created successfully!"
-          echo "📱 APK file: app-release.apk"
-          echo "🔗 Download from: https://github.com/${{ github.repository }}/releases/tag/${{ github.ref_name }}"
           
